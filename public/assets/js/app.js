@@ -19,7 +19,7 @@ $(document).on("click", "#add-notes", function() {
   // Now make an ajax call for the Article
   $.ajax({
     method: "GET",
-    url: "/articles/" + thisId
+    url: "/Games/" + thisId
   })
     // With that done, add the note information to the page
     .then(function(data) {
@@ -45,13 +45,13 @@ $(document).on("click", "#add-notes", function() {
 
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {
-  // Grab the id associated with the article from the submit button
+  // Grab the id associated with the game from the submit button
   var thisId = $(this).attr("data-id");
 
   // Run a POST request to change the note, using what's entered in the inputs
   $.ajax({
     method: "POST",
-    url: "/articles/" + thisId,
+    url: "/Games/" + thisId,
     data: {
       // Value taken from title input
       title: $("#titleinput").val(),
