@@ -31,6 +31,21 @@ app.get("/", (req,res) => {
 		res.json(err);
 	});
 });
+app.get("/index", (req,res) => {
+	
+	db.Game.find({})
+	.then(function(dbGame) {
+		// If we were able to successfully find Games, send them back to the client
+		var hbsObject = {
+			dbGame
+		};
+		res.render("index",hbsObject);
+	})
+	.catch(function(err) {
+		// If an error occurred, send it to the client
+		res.json(err);
+	});
+});
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
