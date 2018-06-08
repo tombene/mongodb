@@ -15,27 +15,42 @@ module.exports = function (app) {
 var db = require("../models");
 
 // Routes
-
+// load index if path is blank
+app.get("/", (req,res) => {
+	db.Article.find({})
+	.then(function(dbArticle) {
+		// If we were able to successfully find Articles, send them back to the client
+		var hbsObject = {
+			dbArticle
+		};
+		res.render("index",hbsObject);
+	})
+	.catch(function(err) {
+		// If an error occurred, send it to the client
+		res.json(err);
+	});
+});
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
-  axios.get("http://www.echojs.com/").then(function(response) {
+  axios.get("https://boardgamegeek.com/browse/boardgame").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article h2").each(function(i, element) {
+    $("tr#row_").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
-      // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this)
-        .children("a")
-        .text();
-      result.link = $(this)
-        .children("a")
-        .attr("href");
-
+			// Add the text and href of every link, and save them as properties of the result object
+			
+      result.title = $(this).find("td.collection_objectname").children("div").find("a").text();
+			result.link = "https://boardgamegeek.com" + $(this).find("td.collection_objectname").children("div").find("a").attr("href");
+			result.imgLink = $(this).find("td.collection_thumbnail").find("a").find("img").attr("src");
+			result.rank = $(this).find("td.collection_rank").text();
+			// result.geekRating = $(this).find("td.collection_bggrating").text().split;
+			// result.avgRating = $(this).find("td.")
+			console.log(result);
       // Create a new Article using the `result` object built from scraping
       db.Article.create(result)
         .then(function(dbArticle) {

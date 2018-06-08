@@ -16,7 +16,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/myarticles");
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/myarticles";
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
 // Set Handlebars.
 var exphbs = require("express-handlebars");
 
@@ -25,7 +27,7 @@ app.set("view engine", "handlebars");
 
 // Routes
 // =============================================================
-require("./controllers/article_controller.js")(app);
+require("./controllers/scraper_controller.js")(app);
 // Start the server
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
