@@ -63,7 +63,7 @@ app.get("/scrape", function(req, res) {
       result.title = $(this).find("td.collection_objectname").children("div").find("a").text();
 			result.link = "https://boardgamegeek.com" + $(this).find("td.collection_objectname").children("div").find("a").attr("href");
 			result.imgLink = $(this).find("td.collection_thumbnail").find("a").find("img").attr("src");
-			result.rank = $(this).find("td.collection_rank").text();
+			result.rank = $(this).find("td.collection_rank").find("a").attr("name");
 			// result.geekRating = $(this).find("td.collection_bggrating").text().split;
 			// result.avgRating = $(this).find("td.")
 			console.log(result);
@@ -96,6 +96,33 @@ app.get("/Games", function(req, res) {
       // If an error occurred, send it to the client
       res.json(err);
     });
+});
+
+// Route for grabbing a specific Game by id, populate it with it's note
+app.put("/RemoveGameNotes/:id", function(req, res) {
+  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+  db.Game.findOne({ _id: req.params.id })
+    // ..and populate all of the notes associated with it
+		//.populate("note").remove() // this removes everything
+		.populate("note")
+		// .exec(function(error,data){
+		// 	console.log(data);
+		// });
+    .then(function(result) {
+			// If we were able to successfully find an Game with the given id, send it back to the client
+			console.log("result",result.note._id);
+			db.Note.findOne({_id: result.note._id}).remove()
+			.then(function(deleteresult){
+				console.log("delete",deleteresult);
+			});
+      res.json(result);
+    })
+    .catch(function(err) {
+			console.log(err);
+      // If an error occurred, send it to the client
+      res.json(err);
+		});
+
 });
 
 // Route for grabbing a specific Game by id, populate it with it's note

@@ -31,7 +31,7 @@ $(document).on("click", "#add-notes", function() {
       // A textarea to add a new note body
       $("#notes"+data._id).append("<label for='body'>Note</label><textarea id='bodyinput' name='body' class='form-control'></textarea><br/>");
       // A button to submit a new note, with the id of the article saved to it
-      $("#notes"+data._id).append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+			$("#notes"+data._id).append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
       // If there's a note in the article
       if (data.note) {
@@ -40,6 +40,25 @@ $(document).on("click", "#add-notes", function() {
         // Place the body of the note in the body textarea
         $("#bodyinput").val(data.note.body);
       }
+    });
+});
+
+// Whenever someone clicks delete notes button
+$(document).on("click", "#delete-notes", function() {
+  
+	
+  // Save the id from the p tag
+	var thisId = $(this).attr("data-id");
+	// Empty the notes from the note section
+	$("#notes"+thisId).empty();
+  // Now make an ajax call for the Article
+  $.ajax({
+    method: "PUT",
+    url: "/RemoveGameNotes/" + thisId
+  })
+    // With that done, add the note information to the page
+    .then(function(data) {
+      console.log(data);
     });
 });
 
@@ -71,3 +90,5 @@ $(document).on("click", "#savenote", function() {
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+
+

@@ -1,23 +1,31 @@
-<div class="row article-box">
-	{{!--
-	<div class="row"> --}}
-		<div class="col-md-10">
-			<h3>{{title}}</h3>
-			<p>{{link}}</p>
-		</div>
-		<div class="col-md-2">
-			<button id="add-notes" class="btn-success" data-id="{{_id}}">Notes</button>
-			<button id="delete-notes" class="btn-danger">Delete</button>
-		</div>
+{{!--
+<div class="row article-box"> --}} {{!--
+	<div class="row"> --}} {{!--
+		<div class="col-md-10"> --}}
+			<div class="card">
+				<div class="img-container">
+					<p><strong>Rank:</strong>{{rank}}</p><img data-id="img{{_id}}" src="{{imgLink}}" alt="Game Image" />
+				</div>
+				<div class="content">
+					<ul>
+						<li><strong>Title:</strong>{{title}}</li>
+						<li><strong>URL:</strong><a href="{{link}}">{{link}}</a></li>
+					</ul>
+					<h3></h3>
+					<p></p>
+				</div>
 
-		{{!-- </div> --}}
+				<button id="add-notes" class="btn btn-success" data-id="{{_id}}">Notes</button>
+				<button id="delete-notes" class="btn btn-danger" data-id="{{_id}}">Delete</button>
+				
+			</div>
+			<div class="input-group" id="notes{{_id}}">
 
-</div>
-<div class="row">
+				</div>
 
-	<div class="col-md-6 col-md-offset-5" >
-		<div class="input-group" id="notes{{_id}}">
+			{{!-- </div> --}} {{!-- </div> --}} {{!--
+	<div class="col-md-6 col-md-offset-5">
 
-		</div>
 	</div>
-</div>
+
+</div> --}}
